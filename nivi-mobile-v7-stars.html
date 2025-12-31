@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Nivi IA — Mobile Canon (v0+v1)</title>
+
+  <style>
+    html, body {
+      margin: 0;
+      height: 100%;
+      overflow: hidden;
+      background: #05080f;
+    }
+    canvas {
+      width: 100vw;
+      height: 100vh;
+      display: block;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="stage"></canvas>
+
+  <!-- ===== LIBS (NO TOCAR ORDEN) ===== -->
+  <script src="./libs/pixi.min.js"></script>
+  <script src="./libs/live2dcubismcore.min.js"></script>
+  <script src="./libs/cubism4.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pixi-live2d-display/dist/pixi-live2d-display.min.js"></script>
+
+  <script>
+  (async () => {
+    "use strict";
+
+    /* =========================================================
+       Nivi IA — Reescritura Mobile Canon
+       v0 + v1: base + modelo + velo (sin audio / sin UI / sin estrellas / sin rects)
+       ========================================================= */
+
+    /* =========================================================
+       1) PIXI APP SETUP
+       ========================================================= */
+    PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.LINEAR;
+
+    const DPR = Math.min(window.devicePixelRatio || 1, 2);
+    const app = new PIXI.Application({
+      view: document.getElementById("stage"),
+      backgroundAlpha: 0,
+      antialias: true,
+      autoDensity: true,
+      resolution: DPR,
+      resizeTo: window,
+      powerPreference: "high-performance"
+    });
+
+    /* =========================================================
+       2) CAPAS / ORDEN (IMPORTANTÍSIMO)
+       =========================================================
+       1) rectLayer (fondo)      -> (aún vacío en v0+v1)
+       2) model
+       3) nightOverlay (velo)
+       4) starLayer              -> (aún vacío)
+       5) zzzLayer               -> (aún vacío)
+       6) uiLayer                -> (aún vacío)
+       ========================================================= */
+    const rectLayer = new PIXI.Container();
+    const starLayer = new PIXI.Container();
+    const zzzLayer  = new PIXI.Container();
+    const uiLayer   = new PIXI.Container();
+    const nightOverlay = new PIXI.Graphics();
+
+    app.stage.addChild(rectLayer);
+
+    /* =========================================================
+       3) MODELO (v1)
+       ========================================================= */
+    const model = await PIXI.live2d.Live2DModel.from(
+      "assets/models/nivi/nivi.model3.json"
+    );
+    model.anchor.set(0.5, 1);
+
+    /* ================= HELPERS (Live2D params) ================= */
+    function core(){ return model.internalModel.coreModel; }
+    function clamp(v, min, max){ return Math.max(min, Math.min(max, v)); }
+    function setParam(id, v){ core().setParameterValueById(id, clamp(v, -30, 30)); }
+
+    app.stage.addChild(model);
+    app.stage.addChild(nightOverlay);
+    app.stage.addChild(starLayer);
+    app.stage.addChild(zzzLayer);
+    app.stage.addChild(uiLayer);
+
+
+    /* =========================================================
+       4) UI (poster) — móvil canon (v2)
+       ========================================================= */
+    // Título
+    const titleText = new PIXI.Text("Nivi?", {
+      fontFamily: "Inter",
+      fontWeight: "700",
+      fontSize: 44,           // móvil fijo
+      fill: 0xEAF1FF,
+      align: "center",
+      letterSpacing: 1,
+      padding: 14,
+      dropShadow: true,
+      dropShadowColor: 0xAFCBFF,
+      dropShadowBlur: 6,
+      dropShadowAngle: Math.PI / 2,
+      dropShadowDistance: 0,
+      dropShadowAlpha: 0.35
+    });
+    titleText.anchor.set(0.5);
+
+    // Subtítulo
+    const subText = new PIXI.Text("COMING SOON", {
+      fontFamily: "Inter",
+      fontWeight: "500",
+      fontSize: 14,           // móvil fijo
+      fill: 0xAFC2E8,
+      align: "center",
+      letterSpacing: 4
+    });
+    subText.anchor.set(0.5);
+
+    // Texto narrativo base (…)
+    const dateText = new PIXI.Text("hm…", {
+      fontFamily: "Inter",
+      fontWeight: "300",
+      fontSize: 14,           // móvil fijo
+      fill: 0xAFC2E8,
+      align: "center",
+      letterSpacing: 2,
+      dropShadow: true,
+      dropShadowColor: 0xAFCBFF,
+      dropShadowBlur: 3,
+      dropShadowAngle: Math.PI / 2,
+      dropShadowDistance: 0,
+      dropShadowAlpha: 0.18
+    });
+    dateText.anchor.set(0.5);
+
+    // Segundo texto para crossfade (lo usaremos en v3)
+    const dateTextB = new PIXI.Text(dateText.text, dateText.style);
+    dateTextB.anchor.set(0.5);
+    dateTextB.alpha = 0;
+
+    // “Initializing...” (con puntos)
+    const initText = new PIXI.Text("Initializing", {
+      fontFamily: "Inter",
+      fontWeight: "300",
+      fontSize: 12,           // móvil fijo
+      fill: 0xAFC2E8,
+      align: "center",
+      letterSpacing: 1
+    });
+    initText.anchor.set(0.5);
+
+    // Fecha / availability
+    const availText = new PIXI.Text("ニーバーリースー！", {
+      fontFamily: "Inter",
+      fontWeight: "500",
+      fontSize: 14,           // móvil fijo
+      fill: 0xAEA69C,
+      dropShadow: true,
+      dropShadowColor: 0xF2EFEA,
+      dropShadowBlur: 2.5,
+      dropShadowAngle: Math.PI / 2,
+      dropShadowDistance: 0,
+      dropShadowAlpha: 0.18
+    });
+    availText.anchor.set(0.5);
+
+    // Línea fina separadora
+    const rule = new PIXI.Graphics();
+
+    uiLayer.addChild(titleText, subText, rule, dateText, dateTextB, initText, availText);
+    uiLayer.alpha = 0.95;
+
+    /* =========================================================
+       4.1) Inicializing: frases aleatorias + puntos (sin audio)
+       ========================================================= */
+    const TECH_LINES = [
+        "Listening", "Learning", "Feeling",
+	"Breathing", "Waiting", "Remembering",
+	"Dreaming", "Becoming"
+    ];
+
+    let initBase = "Initializing";
+    let dots = 0;
+    let dotsTimer = 0;
+    const DOTS_INTERVAL = 0.45;
+
+    let lastIndex = -1;
+    let tapCooldown = 0;
+
+    function pickRandomIndex(len, avoid){
+      if (len <= 1) return 0;
+      let i = Math.floor(Math.random() * len);
+      if (i === avoid) i = (i + 1) % len;
+      return i;
+    }
+
+    function applyRandomText(){
+      const i = pickRandomIndex(TECH_LINES.length, lastIndex);
+      lastIndex = i;
+      initBase = TECH_LINES[i];
+      dotsTimer = DOTS_INTERVAL; // refresco inmediato
+    }
+
+    function updateInitializingDots(dt){
+      dotsTimer += dt;
+      if (dotsTimer >= DOTS_INTERVAL){
+        dotsTimer = 0;
+        dots = (dots + 1) % 4; // 0..3
+      }
+      initText.text = initBase + ".".repeat(dots);
+    }
+
+    // Estado inicial aleatorio
+    applyRandomText();
+
+    // Tap/click para cambiar frase (suave, sin spam)
+    app.view.addEventListener("pointerdown", () => {
+      if (tapCooldown > 0) return;
+      tapCooldown = 0.18;
+      applyRandomText();
+    }, { passive: true });
+
+    /* =========================================================
+       4.2) Glow suave del título (v2)
+       ========================================================= */
+    let titleGlowT = Math.random() * Math.PI * 2;
+
+    function updateTitleGlow(dt){
+      titleGlowT += dt * 2.8;
+      const glowPulse = 0.5 + Math.sin(titleGlowT) * 0.5;
+      titleText.style.dropShadowAlpha = 2.40 + glowPulse * 2.50;
+      titleText.style.dropShadowBlur  = 6 + glowPulse * 5;
+    }
+
+    /* =========================================================
+       4.3) Layout de UI (poster) — móvil canon
+       ========================================================= */
+    function layoutPresentation(){
+      const w = app.renderer.width / DPR;
+      const h = app.renderer.height / DPR;
+
+      const topY = h * 0.10;
+
+      titleText.x = w * 0.5;
+      titleText.y = topY;
+
+      subText.x = w * 0.5;
+      subText.y = topY + 42;
+
+      rule.clear();
+      rule.lineStyle(1, 0xAFC2E8, 0.25);
+      const lineW = Math.min(260, w * 0.55);
+      rule.moveTo(w * 0.5 - lineW/2, subText.y + 18);
+      rule.lineTo(w * 0.5 + lineW/2, subText.y + 18);
+
+      dateText.x = w * 0.5;
+      dateText.y = subText.y + 38;
+      dateTextB.x = dateText.x;
+      dateTextB.y = dateText.y;
+
+      const bottomY = h * 0.86;
+      initText.x = w * 0.5;
+      initText.y = bottomY;
+
+      availText.x = w * 0.5;
+      availText.y = bottomY + 22;
+
+      uiLayer.alpha = 0.95;
+    }
+
+
+    /* =========================================================
+       7) HISTORIA (hm… → frases → final lock) — móvil canon
+       =========================================================
+       - Crossfade suave (sin flashes)
+       - Todas las frases comparten la misma respiración visible
+       - Al llegar al final: la historia se detiene, pero el mundo sigue vivo
+       ========================================================= */
+    const HM_BASE = "…";
+
+    const STORY = [
+      "hm…",
+      "Ve…",
+      "Venus…",
+      "sabes qu…",
+      "…",
+      "kho kho…",
+      "Zzz…",
+      "tu nombre…",
+      "es…",
+      "oye…",
+      "espera…",
+      "casi…",
+      "despierto…"
+    ];
+
+    // Intervalo entre gotas (12–18s)
+    let nextDropIn = 12 + Math.random() * 6;
+
+    // Respiración compartida del texto
+    let textBreathT = Math.random() * Math.PI * 2;
+    const TEXT_BREATH_PERIOD = 9.5;      // segundos por ciclo
+    const TEXT_BREATH_ALPHA_AMP = 0.07;  // 7% de alpha
+
+    // Crossfade state
+    let shownText = HM_BASE;
+    let nextText = null;
+
+    let xState = "idle"; // idle -> fade -> final
+    let xT = 0;
+
+    const X = {
+      fade: 1.10
+    };
+
+    const PROMISE_ALPHA = 0.96;
+    let storyDone = false;
+    let storyIndex = 0;
+
+    function scheduleNextDrop(){
+      nextDropIn = 12 + Math.random() * 6;
+    }
+
+    function startDrop(){
+      if (storyDone) return;
+
+      const finalLine = STORY[STORY.length - 1];
+
+      if (storyIndex >= STORY.length){
+        storyDone = true;
+        shownText = finalLine;
+
+        xState = "final";
+        xT = 0;
+        nextText = null;
+
+        dateText.text  = shownText;
+        dateText.alpha = PROMISE_ALPHA;
+
+        dateTextB.text  = "";
+        dateTextB.alpha = 0;
+
+        nextDropIn = Number.POSITIVE_INFINITY;
+        return;
+      }
+
+      nextText = STORY[storyIndex];
+      storyIndex++;
+
+      // Prepara crossfade
+      dateText.text = shownText;
+      dateTextB.text = nextText;
+
+      dateText.alpha = 1.0;
+      dateTextB.alpha = 0.0;
+
+      xState = "fade";
+      xT = 0;
+    }
+
+    function applySharedTextBreath(dt){
+      textBreathT += dt * (Math.PI * 2 / TEXT_BREATH_PERIOD);
+      const b = 0.5 + Math.sin(textBreathT) * 0.5; // 0..1
+      const a = 1.0 - TEXT_BREATH_ALPHA_AMP/2 + b * TEXT_BREATH_ALPHA_AMP;
+
+      // sombra respirando suave (mismo gesto en ambos textos)
+      const shA = 0.12 + b * 0.18;
+      const shB = 2.0 + b * 2.4;
+
+      dateText.style.dropShadowAlpha = shA;
+      dateText.style.dropShadowBlur  = shB;
+      dateTextB.style.dropShadowAlpha = shA;
+      dateTextB.style.dropShadowBlur  = shB;
+
+      return a;
+    }
+
+    function updateStory(dt){
+      const breathA = applySharedTextBreath(dt);
+
+      // Final lock: mantener el último verso respirando, sin avanzar nunca más
+      if (storyDone || xState === "final"){
+        dateText.text = shownText;
+        dateText.alpha = PROMISE_ALPHA * breathA;
+        dateTextB.text = "";
+        dateTextB.alpha = 0;
+        return;
+      }
+
+      if (xState === "idle"){
+        dateText.text = shownText;
+        dateText.alpha = (shownText === HM_BASE) ? 1.0 : 0.95 * breathA;
+        dateTextB.alpha = 0;
+
+        nextDropIn -= dt;
+        if (nextDropIn <= 0){
+          scheduleNextDrop();
+          startDrop();
+        }
+        return;
+      }
+
+      if (xState === "fade"){
+        xT += dt;
+        const t = Math.min(1, xT / X.fade);
+        const e = t * t * (3 - 2 * t); // smoothstep
+
+        dateText.alpha  = (1 - e) * 0.95 * breathA;
+        dateTextB.alpha = e * 0.95 * breathA;
+
+        if (t >= 1){
+          shownText = nextText ?? shownText;
+          nextText = null;
+
+          dateText.text = shownText;
+          dateText.alpha = 0.95 * breathA;
+          dateTextB.alpha = 0;
+
+          // Si aterrizamos en la última línea, bloqueamos limpio
+          if (shownText === STORY[STORY.length - 1]){
+            storyDone = true;
+            xState = "final";
+            nextDropIn = Number.POSITIVE_INFINITY;
+            return;
+          }
+
+          xState = "idle";
+          xT = 0;
+        }
+        return;
+      }
+
+      // Fallback seguro
+      xState = "idle";
+    }
+
+    // Estado inicial del texto
+    shownText = HM_BASE;
+    dateText.text = HM_BASE;
+    dateText.alpha = 1.0;
+    dateTextB.text = HM_BASE;
+    dateTextB.alpha = 0;
+
+
+    /* =========================================================
+       5) FONDO: RECTÁNGULOS (parallax lateral) — móvil canon (v5)
+       =========================================================
+       - Ambiente suave, no invasivo
+       - 3 capas con velocidades distintas
+       ========================================================= */
+    function rand(min, max){ return min + Math.random() * (max - min); }
+
+    const rectLayers = [];
+    const rectConfig = [
+      { count: 8,  speed: 0.040, wMin: 120, wMax: 200, hMin: 4, hMax: 8, alpha: 0.015 },
+      { count: 12, speed: 0.070, wMin: 60,  wMax: 120, hMin: 4, hMax: 8, alpha: 0.025 },
+      { count: 16, speed: 0.100, wMin: 30,  wMax: 60,  hMin: 3, hMax: 6, alpha: 0.035 }
+    ];
+
+    function makeRect(conf, w, h){
+      const g = new PIXI.Graphics();
+      const rw = rand(conf.wMin, conf.wMax);
+      const rh = rand(conf.hMin, conf.hMax);
+
+      g.beginFill(0xAAC8FF, conf.alpha);
+      g.drawRect(0, 0, rw, rh);
+      g.endFill();
+
+      g.x = Math.random() * w;
+      g.y = Math.random() * h;
+
+      rectLayer.addChild(g);
+      return { g, rw, rh, vx: conf.speed * (Math.random() < 0.5 ? -1 : 1) };
+    }
+
+    function buildRects(){
+      rectLayer.removeChildren();
+      rectLayers.length = 0;
+
+      const w = app.renderer.width / DPR;
+      const h = app.renderer.height / DPR;
+
+      rectConfig.forEach(conf => {
+        const arr = [];
+        for (let i = 0; i < conf.count; i++){
+          arr.push(makeRect(conf, w, h));
+        }
+        rectLayers.push(arr);
+      });
+    }
+
+    function updateRects(dt){
+      const w = app.renderer.width / DPR;
+      const h = app.renderer.height / DPR;
+
+      for (let li = 0; li < rectLayers.length; li++){
+        const arr = rectLayers[li];
+        for (let i = 0; i < arr.length; i++){
+          const r = arr[i];
+          r.g.x += r.vx;
+
+          if (r.vx > 0 && r.g.x > w + 40){
+            r.g.x = -r.rw - 40;
+            r.g.y = Math.random() * h;
+          } else if (r.vx < 0 && r.g.x < -r.rw - 40){
+            r.g.x = w + 40;
+            r.g.y = Math.random() * h;
+          }
+        }
+      }
+    }
+
+
+    /* =========================================================
+       6) Zzz — ambiente (v6)
+       ========================================================= */
+    const zzzs = [];
+    const Z_SEQUENCE = [
+      { size: 1.2, delay: 0.0, grow: true  },
+      { size: 0.8, delay: 0.9, grow: false },
+      { size: 0.4, delay: 2.0, grow: false }
+    ];
+
+    function spawnZzzCycle(){
+      const baseX = model.x;
+      const baseY = model.y - model.height + 20;
+
+      for (let i = 0; i < Z_SEQUENCE.length; i++){
+        const seq = Z_SEQUENCE[i];
+
+        const z = new PIXI.Text("Z", {
+          fontFamily: "Comic Neue",
+          fontSize: 18 * seq.size, // móvil fijo
+          fill: 0xD6DEFF
+        });
+        z.anchor.set(0.5);
+        z.alpha = 0;
+        z.x = baseX;
+        z.y = baseY;
+
+        if (seq.grow) z.scale.set(0.4);
+
+        zzzLayer.addChild(z);
+
+        zzzs.push({
+          z,
+          life: -seq.delay,
+          lifeMax: 4.2,
+          rise: 18 + Math.random() * 6,
+          drift: 6 + Math.random() * 4,
+          swayPhase: Math.random() * Math.PI * 2,
+          swaySpeed: 0.6 + Math.random() * 0.3,
+          grow: seq.grow
+        });
+      }
+    }
+
+    let zzzTimer = 0;
+    let nextZzz = 3.2;
+
+    function updateZzz(dt){
+      // Spawn
+      zzzTimer += dt;
+      if (zzzTimer > nextZzz){
+        spawnZzzCycle();
+        zzzTimer = 0;
+        nextZzz = 3.0 + Math.random() * 0.8;
+      }
+
+      // Update existing
+      for (let i = zzzs.length - 1; i >= 0; i--){
+        const p = zzzs[i];
+        p.life += dt;
+        if (p.life < 0) continue;
+
+        const t = p.life / p.lifeMax;
+
+        if (t < 0.25) p.z.alpha = t / 0.25;
+        else if (t > 0.85) p.z.alpha = (1 - t) / 0.15;
+        else p.z.alpha = 1;
+
+        if (p.grow && t < 0.35){
+          const sc = 0.4 + (t / 0.35) * 0.6;
+          p.z.scale.set(sc);
+        }
+
+        p.z.y -= p.rise * dt;
+        p.swayPhase += dt * p.swaySpeed;
+        p.z.x += Math.sin(p.swayPhase) * p.drift * dt;
+
+        if (t >= 1){
+          zzzLayer.removeChild(p.z);
+          p.z.destroy();
+          zzzs.splice(i, 1);
+        }
+      }
+    }
+
+
+    /* =========================================================
+       7) ESTRELLAS — luciérnagas (v7)
+       =========================================================
+       - Movimiento lento y orgánico
+       - Pulso suave (no compite con el texto)
+       ========================================================= */
+    const stars = [];
+    const STAR_COUNT = 100;      // densidad actual (ajustable luego)
+    const STAR_V = 0.16;         // velocidad base
+    const STAR_DRIFT_MIN = 2.0;
+    const STAR_DRIFT_MAX = 6.0;
+
+    function makeStar(w, h){
+      const g = new PIXI.Graphics();
+      starLayer.addChild(g);
+      return {
+        g,
+        x: Math.random() * w,
+        y: Math.random() * h,
+        r: rand(0.4, 2.0),
+        baseAlpha: rand(0.18, 0.40),
+        phase: Math.random() * Math.PI * 2,
+        pulseSpeed: rand(0.25, 0.60),
+        vx: (Math.random() - 0.8) * STAR_V,
+        vy: (Math.random() - 0.8) * STAR_V,
+        driftT: rand(STAR_DRIFT_MIN, STAR_DRIFT_MAX)
+      };
+    }
+
+    function drawStar(s, alpha){
+      s.g.clear();
+      s.g.beginFill(0xFFFFFF, alpha);
+      s.g.drawCircle(0, 0, s.r);
+      s.g.endFill();
+      s.g.x = s.x;
+      s.g.y = s.y;
+    }
+
+    function buildStars(){
+      starLayer.removeChildren();
+      stars.length = 0;
+
+      const w = app.renderer.width / DPR;
+      const h = app.renderer.height / DPR;
+
+      for (let i = 0; i < STAR_COUNT; i++){
+        stars.push(makeStar(w, h));
+      }
+    }
+
+    function updateStars(dt){
+      const w = app.renderer.width / DPR;
+      const h = app.renderer.height / DPR;
+
+      for (let i = 0; i < stars.length; i++){
+        const s = stars[i];
+
+        s.phase += s.pulseSpeed * dt;
+        const pulse = 0.5 + Math.sin(s.phase) * 0.5;
+        const alpha = s.baseAlpha + pulse * 0.25;
+
+        s.driftT -= dt;
+        if (s.driftT <= 0){
+          s.vx = (Math.random() - 0.8) * STAR_V;
+          s.vy = (Math.random() - 0.8) * STAR_V;
+          s.driftT = rand(STAR_DRIFT_MIN, STAR_DRIFT_MAX);
+        }
+
+        s.x += s.vx;
+        s.y += s.vy;
+
+        if (s.x < -10) s.x = w + 10;
+        if (s.x >  w + 10) s.x = -10;
+        if (s.y < -10) s.y = h + 10;
+        if (s.y >  h + 10) s.y = -10;
+
+        drawStar(s, alpha);
+      }
+    }
+
+    /* =========================================================
+       5) VELO NOCHE (encima del modelo, debajo de estrellas)
+       ========================================================= */
+    function drawNightOverlay(){
+      const w = app.renderer.width / DPR;
+      const h = app.renderer.height / DPR;
+
+      nightOverlay.clear();
+      nightOverlay.beginFill(0x020611, 0.18);
+      nightOverlay.drawRect(0, 0, w, h);
+      nightOverlay.endFill();
+    }
+
+    /* =========================================================
+       6) LAYOUT / RESPONSIVE (móvil canon)
+       ========================================================= */
+    function layout(){
+      const w = app.renderer.width / DPR;
+      const h = app.renderer.height / DPR;
+
+      // Valores actuales (móvil canon)
+      const yFactor = 1.35;
+      const baseFactor = 0.22;
+
+      model.position.set(w / 2, h / yFactor);
+
+      const base = Math.min(w / 1080, h / 1920);
+      model.scale.set(base * baseFactor);
+
+      // Evita que el modelo sobrepase el ancho
+      const maxWidth = w * 0.88;
+      const b = model.getBounds();
+      if (b.width > maxWidth){
+        model.scale.set(model.scale.x * (maxWidth / b.width));
+      }
+
+      drawNightOverlay();
+      buildRects();
+      buildStars();
+      layoutPresentation();
+    }
+
+    window.addEventListener("resize", layout, { passive: true });
+    layout();
+
+
+    /* =========================================================
+       6.5) RESPIRACIÓN DEL MODELO (ParamRes) — móvil canon
+       =========================================================
+       - Orgánica (targets + fases), como en tu versión anterior
+       - Mantiene el mundo "vivo" incluso sin historia
+       ========================================================= */
+    let breath = { value: 30, target: 30, speed: 0.035 };
+
+    function pickTarget(){
+      // Preferimos una respiración suave: mayormente cerca de -18..-22,
+      // y a veces un poco más profunda.
+      return Math.random() < 0.85
+        ? (-18 - Math.random() * 4)     // -18..-22
+        : (-24 - Math.random() * 1.5);  // -24..-25.5
+    }
+
+    let phase = "down";
+    let nextSwitch = 0;
+
+    function updateModelBreath(dt){
+      nextSwitch -= dt;
+      if (nextSwitch <= 0){
+        if (phase === "down"){
+          breath.target = pickTarget();
+          breath.speed  = 0.045 + Math.random() * 0.015;
+          phase = "up";
+          nextSwitch = 0.9 + Math.random() * 0.4;
+        } else {
+          breath.target = 30;
+          breath.speed  = 0.03 + Math.random() * 0.01;
+          phase = "down";
+          nextSwitch = 0.8 + Math.random() * 0.4;
+        }
+      }
+
+      breath.value += (breath.target - breath.value) * breath.speed;
+      setParam("ParamRes", breath.value);
+    }
+
+    /* =========================================================
+       7) LOOP (v2)
+       ========================================================= */
+    app.ticker.add((delta) => {
+      const dt = (delta / 60);
+
+      // Modelo (ParamRes)
+      updateModelBreath(dt);
+
+      // Fondo (rects)
+      updateRects(dt);
+
+      // Estrellas
+      updateStars(dt);
+
+      // Zzz
+      updateZzz(dt);
+
+      // Historia (v4)
+      updateStory(dt);
+
+      // UI (v2)
+      updateTitleGlow(dt);
+      tapCooldown = Math.max(0, tapCooldown - dt);
+      updateInitializingDots(dt);
+    });
+
+  })();
+  </script>
+</body>
+</html>
