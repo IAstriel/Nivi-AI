@@ -1,0 +1,20 @@
+{
+  "basePath": "assets/images/stickers/",
+  "fallback": { "src": "assets/images/healing_station.png" },
+
+  "selection": {
+    "defaultWeight": 1
+  },
+
+  "rules": {
+    "maxAttemptsBeforeFallback": 8
+  },
+
+  "stickers": [
+    { "id": "hs_sleep",        "src": "hs_sleep.png",        "enabled": true, "weight": 1.5 },
+    { "id": "hs_shy",          "src": "hs_shy.png",          "enabled": false, "weight": 1.1 },
+    { "id": "hs_awake",        "src": "hs_awake.png",        "enabled": false, "weight": 1.0 },
+    { "id": "hs_tease",        "src": "hs_tease.png",        "enabled": false, "weight": 0.65 },
+    { "id": "hs_secret_glint", "src": "hs_secret_glint.png", "enabled": false, "weight": 0.12 }
+  ]
+}

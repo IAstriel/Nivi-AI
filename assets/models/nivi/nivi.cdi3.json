@@ -1,0 +1,12 @@
+{
+	"Version": 3,
+	"Parameters": [
+		{
+			"Id": "ParamRes",
+			"GroupId": "",
+			"Name": "Respiracion"
+		}
+	],
+	"ParameterGroups": [],
+	"Parts": []
+}

@@ -1,0 +1,123 @@
+html, body {
+      margin: 0;
+      height: 100%;
+      overflow: hidden;
+      background: #05080f;
+    }
+    canvas {
+      width: 100vw;
+      height: 100vh;
+      display: block;
+    }
+  
+/* --- Music button (top-right) --- */
+
+/* ===== Music button (ghost) ===== */
+.musicBtn{
+  position: fixed;
+  top: calc(8px + env(safe-area-inset-top));
+  right: calc(8px + env(safe-area-inset-right));
+  width: 26px;
+  height: 26px;
+
+  background: transparent;
+  border: 0;
+  padding: 0;
+  margin: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+
+  /* super subtle, like a little ghost */
+  opacity: 0.28;
+  color: rgba(235, 252, 255, 0.55);
+
+  transition: opacity 220ms ease, transform 120ms ease;
+  z-index: 60;
+}
+
+.musicBtn:hover{ opacity: 0.42; }
+.musicBtn:active{ opacity: 0.50; transform: scale(0.95); }
+
+.musicBtn svg{
+  width: 16px;
+  height: 16px;
+  display: block;
+}
+
+.musicBtn.isOn{
+  opacity: 0.55;
+  color: rgba(235, 252, 255, 0.78);
+}
+
+.musicBtn.lightMode{
+  /* same ink as the intro letters (0x0B0F1A) */
+  color: rgba(11, 15, 26, 0.55);
+}
+.musicBtn.lightMode.isOn{
+  color: rgba(11, 15, 26, 0.78);
+}
+
+  /* ===== Secreto: susurro (fantasma, inclinado) ===== */
+.whisper{
+  position: fixed;
+  left: var(--x);
+  top: var(--y);
+  transform-origin: left center;
+  pointer-events: none;
+  white-space: pre-line;
+
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  opacity: 0;
+
+  /* color por defecto (escena oscura) */
+  color: rgba(235, 252, 255, 0.55);
+
+  transform: translateY(6px) rotate(var(--rot));
+  animation: whisperFloat 4.8s ease-out forwards;
+}
+
+@keyframes whisperFloat{
+  0%   { opacity: 0;   transform: translateY(8px)  rotate(calc(var(--rot) - 0.7deg)); }
+  18%  { opacity: .55; transform: translateY(0px)  rotate(var(--rot)); }
+  45%  { opacity: .42; transform: translateY(-3px) rotate(calc(var(--rot) + 0.5deg)); }
+  70%  { opacity: .28; transform: translateY(-6px) rotate(calc(var(--rot) - 0.4deg)); }
+  100% { opacity: 0;   transform: translateY(-10px) rotate(calc(var(--rot) + 0.2deg)); }
+}
+
+.whisper.lightMode{
+  /* misma tinta del inicio (0x0B0F1A) */
+  color: rgba(11, 15, 26, 0.55);
+}
+
+/* estilos para el botón #burstBtn (acceso directo al evento) este bloque y el botón en index.html. *
+
+#burstBtn{
+  position: fixed;
+  right: 16px;
+  top: 64px;
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(10,14,22,0.35);
+  color: rgba(235,252,255,0.80);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  z-index: 60;
+  opacity: 0.28;
+}
+#burstBtn:hover{ opacity: 0.42; }
+#burstBtn:active{ transform: scale(0.95); }
+#burstBtn svg{ width: 16px; height: 16px; display: block; }
+*/
