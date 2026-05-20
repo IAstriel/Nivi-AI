@@ -216,13 +216,13 @@ function cleanUpdateFinalMessage(){
     if(cleanRemainingTaps <= 700) message = `you're really committed, huh...`;
     if(cleanRemainingTaps <= 600) message = `YUKI~ IS GONNA DIE FROM PANIC :>`;
     if(cleanRemainingTaps <= 550) message = `omagaae a kaagi`;
-    if(cleanRemainingTaps <= 500) message = `Halfway there... don't give up now`;
-    if(cleanRemainingTaps <= 300) message = `There is something warm inside?`;
-    if(cleanRemainingTaps <= 150) message = `Almost there. Healing believes in you`;
+    if(cleanRemainingTaps <= 500) message = `halfway there... don't give up now`;
+    if(cleanRemainingTaps <= 300) message = `there is something warm inside?`;
+    if(cleanRemainingTaps <= 150) message = `almost there. Healing believes in you`;
     if(cleanRemainingTaps <= 100) message = `only mot cham~ nee?`;
     if(cleanRemainingTaps <= 80) message = `oh really? hihi`;
-    if(cleanRemainingTaps <= 30) message = `It is opening a litto a litto...`;
-    if(cleanRemainingTaps <= 10) message = `Just a few more`;
+    if(cleanRemainingTaps <= 30) message = `it is opening a litto a litto...`;
+    if(cleanRemainingTaps <= 10) message = `just a few more`;
     if(cleanRemainingTaps <= 9) message = `yuki yuki wait`;
     if(cleanRemainingTaps <= 8) message = `I’M NOT READY AAAAA 💔`;
     if(cleanRemainingTaps <= 7) message = `THE GIFT IS GONNA OPEN—!`;
