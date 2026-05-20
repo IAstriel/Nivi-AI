@@ -220,7 +220,7 @@ function cleanUpdateFinalMessage(){
     if(cleanRemainingTaps <= 300) message = `there is something warm inside?`;
     if(cleanRemainingTaps <= 150) message = `almost there. Healing believes in you`;
     if(cleanRemainingTaps <= 100) message = `only mot cham~ nee?`;
-    if(cleanRemainingTaps <= 80) message = `oh really? hihi`;
+    if(cleanRemainingTaps <= 80) message = `oh really? hhhh`;
     if(cleanRemainingTaps <= 30) message = `it is opening a litto a litto...`;
     if(cleanRemainingTaps <= 10) message = `just a few more`;
     if(cleanRemainingTaps <= 9) message = `yuki yuki wait`;
