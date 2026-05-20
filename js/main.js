@@ -209,7 +209,8 @@ function cleanUpdateFinalMessage(){
   let message = `I just hope this little silly thing can put a smile on your face :><br>Thank you for being here, Yuki~ `;
 
   if(cleanTapStarted){
-    message = `Healing is watching very carefully.`;
+    message = `I just hope this little silly thing can put a smile on your face :><br>Thank you for being here, Yuki~ `;
+    if(cleanRemainingTaps <= 990) message = `Healing is watching very carefully.`;
     if(cleanRemainingTaps <= 980) message = `take patience nhaa~`;
     if(cleanRemainingTaps <= 800) message = `so... mush éc o éc hhhh`;
     if(cleanRemainingTaps <= 750) message = `it's not me... I swear`;
