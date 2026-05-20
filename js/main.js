@@ -258,7 +258,7 @@ function cleanEnterFinalMode(){
 function cleanTypeFinalText(target){
   const lines = [
     'ITEM ACQUIRED',
-    '[ Fun Memory ]'
+    '[ A Memory ]'
   ];
 
   target.innerHTML = '';
