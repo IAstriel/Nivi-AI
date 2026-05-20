@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <title>Healing Theater~</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+  <div id="deviceBlock">
+    <div>
+      Please rotate your device ✨ <br> Yuuuki~ 
+    </div>
+  </div>
+
+  <div id="introOverlay">
+    <div class="overlay-frame"></div>
+
+    <div class="overlay-content">
+      <h1>The stage still sleeps...</h1>
+      <p>Tap to awaken...</p>
+    </div>
+  </div>
+
+  <main id="stage" class="stage">
+    <img id="bgImage" class="bg-image" src="assets/images/fondo.png" alt="">
+    <img id="healing" class="healing" src="assets/stickers/healing-volando.png" alt="">
+    <img id="gift" class="gift" src="" alt="">
+    <img id="frontStage" class="front-stage" src="assets/images/escenario.png" alt="">
+  </main>
+
+  <canvas id="snowCanvas" aria-hidden="true"></canvas>
+
+  <div id="dialog" aria-live="polite">
+    <span id="dialogText"></span>
+  </div>
+
+  <audio id="giftBounceSound" preload="auto">
+    <source src="assets/audio/pop.mp3" type="audio/mpeg">
+  </audio>
+
+
+  <div id="cleanFinalUI">
+    <div id="cleanFinalTitle">
+      Happy Birthday<br><span>Yuki~</span>
+    </div>
+
+    <div id="cleanTapCounter">1000</div>
+
+    <div id="cleanFinalMessage">
+      I just hope this little silly thing can put a smile on your face :><br>
+      Thank you for being here, Yuki~ 
+    </div>
+
+    <div id="cleanFinalSignature">ニーバーリースー！</div>
+  </div>
+
+  <audio id="musicAudio" src="assets/audio/musica.mp3" preload="auto" loop></audio>
+  <button id="musicBtn" type="button" aria-label="Music" aria-pressed="false">♪</button>
+
+  <script src="js/scenes.js"></script>
+  <script src="js/snow.js"></script>
+  <script src="js/main.js"></script>
+  </div>
+</body>
+</html>
