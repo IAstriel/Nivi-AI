@@ -210,7 +210,7 @@ function cleanUpdateFinalMessage(){
 
   if(cleanTapStarted){
     message = `Healing is watching very carefully.`;
-    if(cleanRemainingTaps <= 900) message = `take patience nhaa~`;
+    if(cleanRemainingTaps <= 980) message = `take patience nhaa~`;
     if(cleanRemainingTaps <= 800) message = `so... mush éc o éc hhhh`;
     if(cleanRemainingTaps <= 750) message = `it's not me... I swear`;
     if(cleanRemainingTaps <= 700) message = `you're really committed, huh...`;
@@ -227,7 +227,7 @@ function cleanUpdateFinalMessage(){
     if(cleanRemainingTaps <= 8) message = `I’M NOT READY AAAAA 💔`;
     if(cleanRemainingTaps <= 7) message = `THE GIFT IS GONNA OPEN—!`;
     if(cleanRemainingTaps <= 6) message = `DON’T PRESS THE LAST TAP!! NHA`;
-    if(cleanRemainingTaps <= 5) message = `JYUKI~ DEFINITELY DIDN’T CRY MAKING THIS…`;
+    if(cleanRemainingTaps <= 5) message = `YUKI~ DEFINITELY DIDN’T CRY MAKING THIS…`;
     if(cleanRemainingTaps <= 4) message = `IT’S TOTALLY EMPTY I PROMISE ❄`;
     if(cleanRemainingTaps <= 3) message = `I SWEAR THERE’S NOTHING INSIDE 😭`;
     if(cleanRemainingTaps <= 2) message = `wait wait waito`;
