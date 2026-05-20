@@ -619,3 +619,29 @@ document.addEventListener('keydown', (event) => {
 
 els.musicBtn.addEventListener('pointerdown', (event) => event.stopPropagation());
 els.musicBtn.addEventListener('click', toggleMusic);
+
+// Bloquear zoom multitouch
+document.addEventListener('gesturestart', (e) => {
+  e.preventDefault();
+});
+
+document.addEventListener('gesturechange', (e) => {
+  e.preventDefault();
+});
+
+document.addEventListener('gestureend', (e) => {
+  e.preventDefault();
+});
+
+// Evita doble tap zoom
+let lastTouchEnd = 0;
+
+document.addEventListener('touchend', (event) => {
+  const now = Date.now();
+
+  if(now - lastTouchEnd <= 300){
+    event.preventDefault();
+  }
+
+  lastTouchEnd = now;
+}, { passive:false });
