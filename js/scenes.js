@@ -86,14 +86,14 @@ const scenes = [
   { text: 'ơiii!', healing: STICKERS.healingllamando, gift: STICKERS.regalo, action: 'pointing' },
   { text: 'you!', healing: STICKERS.healingApuntando, gift: STICKERS.regalo, action: 'pointing' },
   { text: 'y-y-y-you!', healing: STICKERS.healingApuntando, gift: STICKERS.regalo, action: 'pointing' },
-  { text: 'hehe I forgot, sorry', healing: STICKERS.healingshy, gift: STICKERS.regalo, action: 'pointing' },
+  { text: 'I ruined everything soorry ', healing: STICKERS.healingshy, gift: STICKERS.regalo, action: 'pointing' },
   { text: 'sooo… what even is this anyway huh?', healing: STICKERS.healingRecordando, gift: STICKERS.regalo, action: 'realize' },
   { text: 'argh!', healing: STICKERS.healingGritando, gift: STICKERS.regalo, action: 'frustratedShout' },
   { text: 'I thought it was for me...', healing: STICKERS.healingPuchero, gift: STICKERS.regalo, action: 'poutEnvy' },
   { text: 'Hmpf! I wanted one too', healing: STICKERS.healingPuchero, gift: STICKERS.regalo, action: 'poutEnvy' },
   { text: 'But well… I guess today…', healing: STICKERS.healingPuchero, gift: STICKERS.regalo, action: 'poutEnvy' },
   { text: '…is your special day', healing: STICKERS.healingVueltaIzq, gift: STICKERS.regalo, action: 'poutEnvy' },
-  { text: 'I should…', healing: STICKERS.healingNormal, gift: STICKERS.regalo, action: 'powerCast' },
+  { text: 'I should…', healing: STICKERS.healingNormal, gift: STICKERS.regalo, action: 'poutEnvy' },
   { text: 'lemme bring the gift closer to you', healing: STICKERS.healingLanzandoRegalo, gift: STICKERS.regalo, action: 'finalGiftCenter' },
   { text: '“healing used his tiny little power”', healing: STICKERS.healingLanzandoRegalo, gift: STICKERS.regaloAura, action: 'finalGiftGrow' }
 ];
