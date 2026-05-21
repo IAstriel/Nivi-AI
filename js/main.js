@@ -215,7 +215,7 @@ function cleanUpdateFinalMessage(){
     if(cleanRemainingTaps <= 800) message = `so... mush éc o éc hhhh`;
     if(cleanRemainingTaps <= 750) message = `it's not me... I swear`;
     if(cleanRemainingTaps <= 700) message = `you're really committed, huh...`;
-    if(cleanRemainingTaps <= 600) message = `YUKI~ IS GONNA DIE FROM PANIC :>`;
+    if(cleanRemainingTaps <= 600) message = `Oh WAO IM SURPRISED YUKI~`;
     if(cleanRemainingTaps <= 550) message = `omagaae a kaagi`;
     if(cleanRemainingTaps <= 500) message = `halfway there... don't give up now`;
     if(cleanRemainingTaps <= 300) message = `there is something warm inside?`;
