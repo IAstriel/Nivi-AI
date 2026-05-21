@@ -258,7 +258,7 @@ function cleanEnterFinalMode(){
 function cleanTypeFinalText(target){
   const lines = [
     'ITEM ACQUIRED',
-    '[ A Memory ]'
+    '[ 1000 NiVi Coins ]'
   ];
 
   target.innerHTML = '';
