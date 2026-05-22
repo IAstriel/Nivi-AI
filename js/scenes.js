@@ -40,7 +40,7 @@ const scenes = [
   { text: '¡Ahem!', healing: STICKERS.healingTociendo, gift: null, action: 'coughBounce' },
 
   { text: 'Under this soft snow...', healing: STICKERS.healingDerecha, gift: null, action: 'talkFly' },
-  { text: 'where dreams sleep in silence...', healing: STICKERS.healingIzquierda, gift: null, action: 'talkFly' },
+  { text: 'Where dreams sleep in silence...', healing: STICKERS.healingIzquierda, gift: null, action: 'talkFly' },
   { text: 'I, Healing, have come to...', healing: STICKERS.healingDerecha, gift: null, action: 'talkFly' },
 
   { text: '...', healing: STICKERS.healingPensando, gift: null, action: 'moveLeftSafe' },
@@ -55,11 +55,11 @@ const scenes = [
   { text: 'Eeh?', healing: STICKERS.healingAsustadoDerecha, gift: STICKERS.regalo, action: 'giftGround' },
   { text: 'Eeeh?', healing: STICKERS.healingAsustadoIzquierda, gift: STICKERS.regalo, action: 'giftGround' },
   { text: 'Eeeeh…?', healing: STICKERS.healingAsustadoDerecha, gift: STICKERS.regalo, action: 'giftGround' },
-  { text: 'well...', healing: STICKERS.healingNormal, gift: STICKERS.regalo, action: 'giftGround' },
-  { text: 'you’re all alone huh?', healing: STICKERS.healingRecordando, gift: STICKERS.regalo, action: 'leftThinking' },
-  { text: 'lemme see', healing: STICKERS.healingLeyendo, gift: STICKERS.regalo, action: 'approachGift' },
+  { text: 'Well...', healing: STICKERS.healingNormal, gift: STICKERS.regalo, action: 'giftGround' },
+  { text: 'You’re all alone huh?', healing: STICKERS.healingRecordando, gift: STICKERS.regalo, action: 'leftThinking' },
+  { text: 'Lemme see', healing: STICKERS.healingLeyendo, gift: STICKERS.regalo, action: 'approachGift' },
   { text: 'it says f-for you', healing: STICKERS.healingLeyendo, gift: STICKERS.regalo, action: 'readNearGift' },
-  { text: 'which means for me!', healing: STICKERS.healingVueltaIzq, gift: STICKERS.regalo, action: 'readNearGift' },
+  { text: 'Which means for me!', healing: STICKERS.healingVueltaIzq, gift: STICKERS.regalo, action: 'readNearGift' },
   { text: 'hmmm…', healing: STICKERS.healingPensando, gift: STICKERS.regalo, action: 'returnLeft' },
   { text: '...For me?', healing: STICKERS.healingPensando, gift: STICKERS.regalo, action: 'leftThinking' },
   { text: 'I wonder who it could be from', healing: STICKERS.healingSonrojado, gift: STICKERS.regalo, action: 'blushThinking' },
@@ -69,11 +69,11 @@ const scenes = [
 
   
   { text: '“For me...”', healing: STICKERS.healingVueltaIzq, gift: STICKERS.regalo, action: 'dilemmaFly' },
-  { text: '“maybe...”', healing: STICKERS.healingVueltaDer, gift: STICKERS.regalo, action: 'dilemmaFly' },
+  { text: '“Maybe...”', healing: STICKERS.healingVueltaDer, gift: STICKERS.regalo, action: 'dilemmaFly' },
   { text: '“For me...”', healing: STICKERS.healingSonrojado, gift: STICKERS.regalo, action: 'dilemmaFly' },
   { text: '“For you...”', healing: STICKERS.healingPensando, gift: STICKERS.regalo, action: 'dilemmaFly' },
   { text: '“For me...”', healing: STICKERS.healingNormal, gift: STICKERS.regalo, action: 'dilemmaFly' },
-  { text: '“ah no!”', healing: STICKERS.healingTimido, gift: STICKERS.regalo, action: 'dilemmaFly' },
+  { text: '“Ah no!”', healing: STICKERS.healingTimido, gift: STICKERS.regalo, action: 'dilemmaFly' },
 
   { text: 'hmmm…', healing: STICKERS.healingPensando, gift: STICKERS.regalo, action: 'stillLeft' },
   { text: 'There was something I had to do with this...', healing: STICKERS.healingPensando, gift: STICKERS.regalo, action: 'stillLeft' },
@@ -84,8 +84,8 @@ const scenes = [
   { text: '...oh', healing: STICKERS.healingRecordando, gift: STICKERS.regalo, action: 'realize' },
   { text: 'I had to deliver it.', healing: STICKERS.healingRecordando, gift: STICKERS.regalo, action: 'realize' },
   { text: 'ơiii!', healing: STICKERS.healingllamando, gift: STICKERS.regalo, action: 'pointing' },
-  { text: 'you!', healing: STICKERS.healingApuntando, gift: STICKERS.regalo, action: 'pointing' },
-  { text: 'y-y-y-you!', healing: STICKERS.healingApuntando, gift: STICKERS.regalo, action: 'pointing' },
+  { text: 'You!', healing: STICKERS.healingApuntando, gift: STICKERS.regalo, action: 'pointing' },
+  { text: 'Y-y-y-you!', healing: STICKERS.healingApuntando, gift: STICKERS.regalo, action: 'pointing' },
   { text: 'I ruined everything soorry ', healing: STICKERS.healingshy, gift: STICKERS.regalo, action: 'pointing' },
   { text: 'sooo… what even is this anyway huh?', healing: STICKERS.healingRecordando, gift: STICKERS.regalo, action: 'realize' },
   { text: 'argh!', healing: STICKERS.healingGritando, gift: STICKERS.regalo, action: 'frustratedShout' },
@@ -94,6 +94,6 @@ const scenes = [
   { text: 'But well… I guess today…', healing: STICKERS.healingPuchero, gift: STICKERS.regalo, action: 'poutEnvy' },
   { text: '…is your special day', healing: STICKERS.healingVueltaIzq, gift: STICKERS.regalo, action: 'poutEnvy' },
   { text: 'I should…', healing: STICKERS.healingNormal, gift: STICKERS.regalo, action: 'poutEnvy' },
-  { text: 'lemme bring the gift closer to you', healing: STICKERS.healingLanzandoRegalo, gift: STICKERS.regalo, action: 'finalGiftCenter' },
-  { text: '“healing used his tiny little power”', healing: STICKERS.healingLanzandoRegalo, gift: STICKERS.regaloAura, action: 'finalGiftGrow' }
+  { text: 'Lemme bring the gift closer to you', healing: STICKERS.healingLanzandoRegalo, gift: STICKERS.regalo, action: 'finalGiftCenter' },
+  { text: '“Healing~ used his tiny little power”', healing: STICKERS.healingLanzandoRegalo, gift: STICKERS.regaloAura, action: 'finalGiftGrow' }
 ];
