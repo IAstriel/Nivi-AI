@@ -37,7 +37,7 @@ const scenes = [
   { text: 'hellooo', healing: STICKERS.healingNormal, gift: null, action: 'shy' },
   { text: 'Let’s see... what was I supposed to do?', healing: STICKERS.healingPensando, gift: null, action: 'idle' },
   { text: 'Oh! oki…', healing: STICKERS.healingNormal, gift: null, action: 'idle' },
-  { text: 'cof… cof…', healing: STICKERS.healingTociendo, gift: null, action: 'coughBounce' },
+  { text: '¡Ahem!', healing: STICKERS.healingTociendo, gift: null, action: 'coughBounce' },
 
   { text: 'Under this soft snow...', healing: STICKERS.healingDerecha, gift: null, action: 'talkFly' },
   { text: 'where dreams sleep in silence...', healing: STICKERS.healingIzquierda, gift: null, action: 'talkFly' },
