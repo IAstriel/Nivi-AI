@@ -29,12 +29,12 @@ const STICKERS = {
 };
 
 const scenes = [
-  { text: 'tap!', healing: null, gift: null, action: 'idle' },
+  { text: 'Tap!', healing: null, gift: null, action: 'idle' },
   { text: '...', healing: null, gift: null, action: 'idle' },
   { text: '...', healing: null, gift: null, action: 'idle' },
 
   { text: '¡Fiiiuuu…!', healing: STICKERS.healingVolando, gift: null, action: 'entrance' },
-  { text: 'hellooo', healing: STICKERS.healingNormal, gift: null, action: 'shy' },
+  { text: 'Holiii', healing: STICKERS.healingNormal, gift: null, action: 'shy' },
   { text: 'Let’s see... what was I supposed to do?', healing: STICKERS.healingPensando, gift: null, action: 'idle' },
   { text: 'Oh! oki…', healing: STICKERS.healingNormal, gift: null, action: 'idle' },
   { text: '¡Ahem!', healing: STICKERS.healingTociendo, gift: null, action: 'coughBounce' },
