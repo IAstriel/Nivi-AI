@@ -242,7 +242,7 @@ function cleanUpdateFinalMessage(){
 function cleanEnterFinalMode(){
   cleanFinalMode = true;
   cleanTapStarted = false;
-  cleanRemainingTaps = 1000;
+  cleanRemainingTaps = 28;
   cleanGiftOpened = false;
 
   document.body.classList.add('clean-final');
